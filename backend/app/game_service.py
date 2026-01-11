@@ -101,6 +101,64 @@ class GameService:
     def get_word_similarity(self, word1: str, word2: str) -> float:
         # get the cosine similarity between two words
         return self.semantic_graph.get_similarity(word1, word2)
+    
+    def calculate_score(self, player_path: List[str], start_word: str, target_word: str) -> Tuple[int, str, Optional[List[str]]]:
+        # calculate score based on player path vs algorithm's optimal path
+        # returns: (score, message, algorithm_path)
+        
+        # validate player path first
+        is_valid, error_msg = self.validate_path(player_path)
+        if not is_valid:
+            return 0, error_msg, None
+        
+        # check that path starts and ends correctly
+        if player_path[0].lower().strip() != start_word.lower().strip():
+            return 0, f"Path must start with '{start_word}'", None
+        
+        if player_path[-1].lower().strip() != target_word.lower().strip():
+            return 0, f"Path must end with '{target_word}'", None
+        
+        # get algorithm's optimal path
+        algorithm_path = self.find_optimal_path(start_word, target_word, max_steps=6)
+        
+        if algorithm_path is None:
+            # algorithm couldn't find a path, but player did - give bonus points
+            player_steps = len(player_path) - 1
+            return 120, "Beat the algorithm! (No algorithm path found)", algorithm_path
+        
+        # calculate steps (path length - 1)
+        player_steps = len(player_path) - 1
+        algorithm_steps = len(algorithm_path) - 1
+        
+        # calculate score based on difference
+        step_difference = player_steps - algorithm_steps
+        
+        if step_difference < 0:
+            # player beat the algorithm!
+            score = 120
+            message = f"🤖 Beat the algorithm! ({player_steps} steps vs {algorithm_steps} steps)"
+        elif step_difference == 0:
+            # perfect path - same as algorithm
+            score = 100
+            message = f"🎯 Perfect path! ({player_steps} steps)"
+        elif step_difference == 1:
+            # +1 extra step
+            score = 90
+            message = f"+1 extra step ({player_steps} steps vs {algorithm_steps} steps)"
+        elif step_difference == 2:
+            # +2 extra steps
+            score = 80
+            message = f"+2 extra steps ({player_steps} steps vs {algorithm_steps} steps)"
+        elif step_difference == 3:
+            # +3 extra steps
+            score = 60
+            message = f"+3 extra steps ({player_steps} steps vs {algorithm_steps} steps)"
+        else:
+            # completed but longer path
+            score = 50
+            message = f"Completed ({player_steps} steps vs {algorithm_steps} steps)"
+        
+        return score, message, algorithm_path
 
     def get_random_word_pair(self) -> Tuple[str, str]:
         # get a random pair of words that have a path between them

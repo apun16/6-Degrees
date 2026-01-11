@@ -15,13 +15,13 @@ TO DO LIST
     - [ ] try implementing dynamic hints -> share next word after their last correct one or hints if the target next word is part of a semantic cluster (ex: Animals, Colours, etc)
     - [ ] add word progress animation where they can see how many words they have submitted + the path laid out
     - [ ] semi transparent dot design patern in the background
-- [ ] implement game logic
-    - [ ] rules on information page
-    - [ ] scoring that depend on beating algorithm with points given accordingly
-- [ ] NLP: Semantic connection of words -> graph model (word: node, edge: implicit: etc)
-    - [ ] BFS implemented to find optimal path between 2 words
-    - [ ] implement cosine similarity to measure how related words are
-    - [ ] connect words by meaning -> words embeded in vectors + store this meaning
+- [X] implement game logic
+    - [X] rules on information page
+    - [X] scoring that depend on beating algorithm with points given accordingly
+- [X] NLP: Semantic connection of words -> graph model (word: node, edge: implicit: etc)
+    - [X] BFS implemented to find optimal path between 2 words
+    - [X] implement cosine similarity to measure how related words are
+    - [X] connect words by meaning -> words embeded in vectors + store this meaning
 - [ ] Implement frontend testing using Jest
     - [ ] Game State test
     - [ ] API test
