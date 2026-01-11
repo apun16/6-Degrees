@@ -1,0 +1,140 @@
+.howToPlay {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    animation: fadeIn 0.3s ease;
+  }
+  
+  .title {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    text-align: center;
+    color: var(--text-primary);
+  }
+  
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+  
+  .intro {
+    text-align: center;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  
+  .example {
+    padding: var(--space-lg);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+  
+  .exampleTitle {
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    margin-bottom: var(--space-md);
+  }
+  
+  .chain {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+  
+  .word {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--accent);
+  }
+  
+  .connector {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+  }
+  
+  .rules, .scoring {
+    padding: var(--space-lg);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+  
+  .rulesTitle, .scoringTitle {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    margin-bottom: var(--space-md);
+  }
+  
+  .rulesList {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  
+  .rulesList li {
+    color: var(--text-secondary);
+    padding-left: var(--space-lg);
+    position: relative;
+  }
+  
+  .rulesList li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent-dim);
+  }
+  
+  .rulesList strong {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  
+  .scoreTable {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  
+  .scoreRow {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
+  
+  .points {
+    font-weight: 500;
+    color: var(--accent);
+  }
+  
+  .tip {
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
