@@ -1,4 +1,4 @@
-/* Landing Page - Minimal & Elegant - in progress */
+/* Landing Page - Complete */
 
 .landing {
   position: fixed;
@@ -51,6 +51,27 @@
   transition: opacity 0.8s ease;
   transition-delay: var(--delay);
   filter: drop-shadow(0 0 2px var(--accent));
+}
+
+.networkNode:nth-child(3n) {
+  animation: pulse 3s ease-in-out infinite;
+  animation-delay: var(--delay);
+}
+
+.networkNode:nth-child(5n) {
+  animation: pulse 4s ease-in-out infinite;
+  animation-delay: calc(var(--delay) + 1s);
+}
+
+@keyframes pulse {
+  20%, 100% {
+    opacity: 0.8;
+    r: 0.8;
+  }
+  50% {
+    opacity: 1.2;
+    r: 1.2;
+  }
 }
   
 .content {
