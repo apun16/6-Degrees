@@ -7,9 +7,10 @@ TO DO LIST
     - [X] add network design to landing page
     - [X] functional play button linked to game page
     - [X] example connections that periodically flip through
-- [ ] create game page
-    - [ ] navbar -> refresh option + ? information page
-    - [ ] footer -> links to github + @2026 + objective
+- [X] create game page
+    - [X] navbar -> refresh option + ? information page
+    - [X] footer -> links to github + @2026 + objective
+    - [ ] implement info page + refresh 
     - [ ] word input page + hint & submit button
     - [ ] try implementing dynamic hints -> share next word after their last correct one or hints if the target next word is part of a semantic cluster (ex: Animals, Colours, etc)
     - [ ] add word progress animation where they can see how many words they have submitted + the path laid out
