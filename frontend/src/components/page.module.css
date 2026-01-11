@@ -1,0 +1,96 @@
+.app {
+    min-height: 100vh;
+    min-height: 100dvh; 
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+    
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space-xl) var(--space-lg);
+    padding-bottom: var(--space-2xl);
+    overflow-x: hidden;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .footer {
+    padding: var(--space-lg);
+    text-align: center;
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    background: var(--bg-primary);
+  }
+  
+  .footerText {
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+  }
+  
+  .footerMeta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    margin-top: var(--space-xs);
+  }
+  
+  .copyright {
+    font-size: 0.625rem;
+    color: var(--text-muted);
+    opacity: 0.7;
+  }
+  
+  .githubLink {
+    color: var(--text-muted);
+    opacity: 0.7;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+  }
+  
+  .githubLink:hover {
+    color: var(--accent);
+    opacity: 1;
+  }
+  
+  @media (max-width: 480px) {
+    .main {
+      padding: var(--space-md) var(--space-sm);
+      padding-bottom: var(--space-lg);
+    }
+    
+    .footer {
+      padding: var(--space-md);
+    }
+    
+    .footerText {
+      font-size: 0.5rem;
+      letter-spacing: 0.15em;
+    }
+    
+    .footerMeta {
+      gap: var(--space-xs);
+    }
+    
+    .copyright {
+      font-size: 0.5rem;
+    }
+  }
+  
+  @media (max-width: 360px) {
+    .footerText {
+      display: none;
+    }
+  }
