@@ -65,6 +65,7 @@
     opacity: 1;
   }
   
+  /* Responsive */
   @media (max-width: 480px) {
     .main {
       padding: var(--space-md) var(--space-sm);

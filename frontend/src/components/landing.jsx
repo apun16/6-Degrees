@@ -22,6 +22,17 @@ function Landing({ onPlay }) {
     return () => clearTimeout(timer)
   }, [])
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsFading(true)
+      setTimeout(() => {
+        setChainIndex(prev => (prev + 1) % SAMPLE_CHAINS.length)
+        setIsFading(false)
+      }, 300)
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <div className={`${styles.landing} ${isVisible ? styles.visible : ''}`}>
       <div className={styles.content}>
@@ -43,7 +54,15 @@ function Landing({ onPlay }) {
         <button className={styles.playBtn} onClick={onPlay}>
           <span className={styles.playText}>play</span>
           <span className={styles.playArrow}>→</span>
-        </button>        
+        </button>
+        
+        <div className={styles.hint}>
+          <span className={styles.hintIcon}>○</span>
+          <span className={`${styles.hintText} ${isFading ? styles.fading : ''}`}>
+            {SAMPLE_CHAINS[chainIndex]}
+          </span>
+          <span className={styles.hintIcon}>○</span>
+        </div>
       </div>
     </div>
   )

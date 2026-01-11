@@ -6,7 +6,7 @@ TO DO LIST
 - [X] create intial landing page
     - [ ] add network design to landing page
     - [X] functional play button linked to game page
-    - [ ] example connections that periodically flip through
+    - [X] example connections that periodically flip through
 - [ ] create game page
     - [ ] navbar -> refresh option + ? information page
     - [ ] footer -> links to github + @2026 + objective
