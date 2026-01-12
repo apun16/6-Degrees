@@ -1,5 +1,5 @@
-const SUPABASE_URL = 'https://ttraifldkbqergllfbyl.supabase.co'
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0cmFpZmxka2JxZXJnbGxmYnlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYyODkzNjMsImV4cCI6MjA4MTg2NTM2M30.iF50vwtIJFuCGpUJCGES21n4Mf9Xqy4ErlKdwBvKi1w'
+const SUPABASE_URL = 'https://ncbnvjvqfleehxqhlpzv.supabase.co'
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5jYm52anZxZmxlZWh4cWhscHp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgxODY1NjUsImV4cCI6MjA4Mzc2MjU2NX0.ZNB0nh8xOaBTMcLTNHcrpBH6P_foePF7Vpz-UJibqc4'
 
 export async function saveGame(gameResult) {
   try {
