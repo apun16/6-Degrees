@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import styles from './Results.module.css'
+import styles from './results.module.css'
 
 function Results({ result, onPlayAgain }) {
   const [copied, setCopied] = useState(false)

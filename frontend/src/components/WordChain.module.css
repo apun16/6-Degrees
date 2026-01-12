@@ -1,5 +1,3 @@
-/* Word Chain - Visual Path Display */
-
 .chain {
     width: 100%;
     display: flex;
@@ -13,9 +11,7 @@
     min-height: 140px;
     position: relative;
     overflow: hidden;
-  }
-  
-  /* Subtle decorative line */
+  }  
   .chain::before {
     content: '';
     position: absolute;
@@ -40,8 +36,7 @@
     position: relative;
     z-index: 1;
   }
-  
-  /* Word pills */
+    
   .word {
     padding: var(--space-sm) var(--space-lg);
     border-radius: 20px;

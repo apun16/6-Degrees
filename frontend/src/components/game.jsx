@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import WordChain from './WordChain'
-import WordInput from './WordInput'
+import WordChain from './wordchain'
+import WordInput from './wordinput'
 import styles from './game.module.css'
 
 function Game({ 

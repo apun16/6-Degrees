@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import Landing from '../components/landing'
 import Game from '../components/game'
-import Results from '../components/Results'
+import Results from '../components/results'
 import HowToPlay from '../components/howtoplay'
 import GitHubIcon from '../components/GitHubIcon' 
 import { api } from '../utils/api'

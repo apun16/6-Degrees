@@ -1,15 +1,10 @@
-import styles from './WordChain.module.css'
+import styles from './wordchain.module.css'
 
-/**
- * Visual representation of the word chain.
- * Shows the path from start to end word.
- */
 function WordChain({ startWord, endWord, chain, onRemoveWord }) {
   const allWords = [startWord, ...chain]
   
   return (
     <div className={styles.chain}>
-      {/* Empty state - show start word and chain visualization */}
       {chain.length === 0 ? (
         <div className={styles.empty}>
           <div className={styles.step}>
@@ -29,7 +24,6 @@ function WordChain({ startWord, endWord, chain, onRemoveWord }) {
         </div>
       ) : (
         <>
-          {/* Render chain words */}
           {allWords.map((word, index) => {
             const isChainWord = index > 0
             const chainIndex = index - 1 // Index in chain array (not including start word)
@@ -64,9 +58,7 @@ function WordChain({ startWord, endWord, chain, onRemoveWord }) {
                 )}
               </div>
             )
-          })}
-          
-          {/* Show target word as ghost */}
+          })}          
           <div className={styles.step}>
             <div className={styles.connector}>
               <div className={styles.lineDashed} />

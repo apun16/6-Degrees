@@ -57,8 +57,11 @@
     overflow-x: hidden;
     
     background-image: 
+      radial-gradient(circle, rgba(232, 200, 122, 0.09) 1px, transparent 1px),
       radial-gradient(circle at 25% 25%, rgba(232, 200, 122, 0.02) 0%, transparent 50%),
       radial-gradient(circle at 75% 75%, rgba(232, 200, 122, 0.02) 0%, transparent 50%);
+    background-size: 20px 20px, 100% 100%, 100% 100%;
+    background-position: 0 0, 0 0, 0 0;
   }
   
   #root {
@@ -185,7 +188,7 @@
     clip: rect(0, 0, 0, 0);
     border: 0;
   }
-  
+
   @keyframes fadeIn {
     from {
       opacity: 0;
