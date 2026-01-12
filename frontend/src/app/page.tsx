@@ -7,6 +7,7 @@ import Results from '../components/Results'
 import HowToPlay from '../components/HowToPlay'
 import GitHubIcon from '../components/GitHubIcon' 
 import { api } from '../utils/api'
+import { saveGame } from '../utils/supabase'
 import styles from '../styles/page.module.css'
 
 interface Puzzle {
@@ -127,7 +128,7 @@ export default function Page() {
       // API returns playerSteps = len(path) - 1 (number of steps/connections)
       // player_path should be just the chain words (not including start/end)
       // player_length should be the number of steps
-      setResultData({
+      const resultData = {
         start_word: puzzle.start_word,
         end_word: puzzle.end_word,
         player_path: chain,
@@ -136,16 +137,24 @@ export default function Page() {
         optimal_length: result.algorithmSteps || 0,
         score: result.score || 0,
         valid: result.valid !== undefined ? result.valid : (result.score > 0),
-      })
+        hints_used: hintsUsed,
+      }
       
+      setResultData(resultData)
       setShowResults(true)
+      
+      // Save game to Supabase (non-blocking)
+      saveGame(resultData).catch(err => {
+        console.error('Failed to save game to database:', err)
+        // Don't show error to user - analytics failure shouldn't break the game
+      })
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to submit chain'
       setError(errorMessage)
     } finally {
       setIsLoading(false)
     }
-  }, [puzzle, chain])
+  }, [puzzle, chain, hintsUsed])
 
   // Get hint
   const handleGetHint = useCallback(async () => {
