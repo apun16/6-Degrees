@@ -22,3 +22,8 @@ __pycache__/
 # OS
 .DS_Store
 Thumbs.db
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/

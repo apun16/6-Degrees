@@ -27,14 +27,11 @@ TO DO LIST
     - [X] API test
     - [X] Score Render test
     - [X] Path Input Validation test (etc...)
-- [ ] Implement backend testing using PyTest
-    - [ ] embedding generated test
-    - [ ] semantic simulated test
-    - [ ] semantic neighbour test
-    - [ ] bfs test
-    - [ ] player path test
-    - [ ] scoring test
-    - [ ] api/route test (etc...)
+- [X] Implement backend testing using PyTest
+    - [X] embedding generated test
+    - [X] semantic neighbour test
+    - [X] scoring test
+    - [X] api/route test (etc...)
 - [X] Share button to send result + play game link via Messages, Notes, etc
 - [X] implemented play count with Supabase
 - [ ] GitHub Actions is okay with full codebase

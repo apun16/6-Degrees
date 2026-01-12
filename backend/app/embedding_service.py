@@ -4,7 +4,7 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 import logging
 
-# Set cache directory for model (matches Dockerfile)
+# set cache directory for model (matches Dockerfile)
 os.environ.setdefault('TRANSFORMERS_CACHE', '/app/models')
 os.environ.setdefault('HF_HOME', '/app/models')
 os.environ.setdefault('HF_DATASETS_CACHE', '/app/models')

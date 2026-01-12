@@ -6,17 +6,13 @@ import logging
 logger = logging.getLogger(__name__)
 
 game_bp = Blueprint('game', __name__)
-
-# Initialize game service (singleton pattern)
 _game_service = None
 
 def get_game_service():
-    # lazy initialization of game service
     global _game_service
     if _game_service is None:
         _game_service = GameService()
     return _game_service
-
 
 @game_bp.route('/health', methods=['GET'])
 def health_check():
@@ -41,7 +37,6 @@ def new_game():
             'success': False,
             'error': str(e)
         }), 500
-
 
 @game_bp.route('/game/path', methods=['POST'])
 def get_optimal_path():
@@ -70,7 +65,7 @@ def get_optimal_path():
             }), 404
         
         steps = len(path) - 1
-        # Ensure path is within 2-6 steps range
+        # path should be within 2-6 steps 
         if steps < 2 or steps > 6:
             return jsonify({
                 'success': False,
@@ -90,7 +85,6 @@ def get_optimal_path():
             'success': False,
             'error': str(e)
         }), 500
-
 
 @game_bp.route('/game/validate', methods=['POST'])
 def validate_word_in_chain():
@@ -119,11 +113,9 @@ def validate_word_in_chain():
                 'error': f"Word '{word}' is not in the database"
             }), 200
         
-        # Build full path for duplicate checking (including start word)
         if not full_path:
             full_path = [start_word] + current_path if start_word else current_path
         else:
-            # Ensure we have start word in full path
             if start_word and start_word.lower() not in [w.lower() for w in full_path]:
                 full_path = [start_word] + full_path
         
@@ -180,7 +172,6 @@ def validate_word_in_chain():
             'error': str(e)
         }), 500
 
-
 @game_bp.route('/game/score', methods=['POST'])
 def calculate_score():
     # calculate score for a player's path
@@ -205,11 +196,11 @@ def calculate_score():
         game_service = get_game_service()
         score, message, algorithm_path = game_service.calculate_score(path, start_word, target_word)
         
-        # Always return optimal path, even if player path is invalid
+        # always return optimal path, even if player path is invalid
         algorithm_steps = len(algorithm_path) - 1 if algorithm_path else None
         player_steps = len(path) - 1
         
-        # Determine if path is valid: score > 0 means valid path
+        # determine if path is valid: score > 0 means valid path
         is_valid = score > 0
         
         return jsonify({
@@ -228,13 +219,11 @@ def calculate_score():
             'error': str(e)
         }), 500
 
-
 @game_bp.route('/game/submit', methods=['POST'])
 def submit_chain():
     # submit completed chain (alias for /game/score)
     # same functionality as calculate_score
     return calculate_score()
-
 
 @game_bp.route('/word/validate', methods=['POST'])
 def validate_word():
@@ -263,7 +252,6 @@ def validate_word():
             'success': False,
             'error': str(e)
         }), 500
-
 
 @game_bp.route('/word/similarity', methods=['POST'])
 def get_similarity():
@@ -295,7 +283,6 @@ def get_similarity():
             'success': False,
             'error': str(e)
         }), 500
-
 
 @game_bp.route('/game/hint', methods=['GET'])
 def get_hint():
@@ -347,7 +334,7 @@ def get_hint():
             # use last word in current path
             current_position = current_words[-1]
         
-        # Find optimal path FROM CURRENT POSITION to target
+        # find optimal path FROM CURRENT POSITION to target
         optimal_from_here = game_service.find_optimal_path(current_position, target_word, max_steps=6)
         
         if optimal_from_here is None or len(optimal_from_here) < 2:
@@ -429,13 +416,11 @@ def get_hint():
             'error': str(e)
         }), 500
 
-
 @game_bp.route('/stats', methods=['GET'])
 def get_stats():
     # get game statistics
     try:
         game_service = get_game_service()
-        
         # get basic stats
         total_words = game_service.word_database.get_word_count()
         words_in_graph = len(game_service.semantic_graph.get_all_words())
