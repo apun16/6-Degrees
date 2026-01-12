@@ -421,17 +421,22 @@ def get_hint():
         else:
             message = "Continue towards the target word"
         
+        hint_data = {
+            'word': hint_word,
+            'message': message,
+            'masked_word': masked_word,
+            'word_length': word_length,
+            'fully_revealed': fully_revealed,
+            'hint_level': hint_level
+        }
+        
+        # only include steps_remaining if it's a valid positive number
+        if steps_remaining is not None and isinstance(steps_remaining, int) and steps_remaining >= 0:
+            hint_data['steps_remaining'] = steps_remaining
+        
         return jsonify({
             'success': True,
-            'hint': {
-                'word': hint_word,
-                'message': message,
-                'masked_word': masked_word,
-                'word_length': word_length,
-                'fully_revealed': fully_revealed,
-                'steps_remaining': steps_remaining,
-                'hint_level': hint_level
-            }
+            'hint': hint_data
         }), 200
     except Exception as e:
         logger.error(f"Error getting hint: {e}")

@@ -130,7 +130,7 @@ function Game({
         <div className={styles.hintBox}>
           <div className={styles.hintHeader}>
             <span className={styles.hintIcon}>💡</span>
-            <span className={styles.hintTitle}>hint #{hint.hint_level || 1}</span>
+            <span className={styles.hintTitle}>hint #{hint.hint_level != null && !isNaN(hint.hint_level) ? hint.hint_level : 1}</span>
             <button 
               className={styles.hintClose} 
               onClick={onClearHint}
@@ -156,7 +156,7 @@ function Game({
             </div>
           )}
           
-          {hint.word_length && !hint.fully_revealed && (
+          {hint.word_length != null && !isNaN(hint.word_length) && !hint.fully_revealed && (
             <p className={styles.hintMeta}>
               {hint.word_length} letters • tap hint again for more
             </p>
@@ -168,7 +168,7 @@ function Game({
             </p>
           )}
           
-          {hint.steps_remaining && (
+          {hint.steps_remaining != null && !isNaN(hint.steps_remaining) && (
             <p className={styles.hintSteps}>
               {hint.steps_remaining} step{hint.steps_remaining !== 1 ? 's' : ''} to target
             </p>

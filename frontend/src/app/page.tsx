@@ -175,7 +175,7 @@ export default function Page() {
           masked_word: result.hint.masked_word,
           word_length: result.hint.word_length,
           fully_revealed: result.hint.fully_revealed || false,
-          steps_remaining: result.hint.optimalPathLength - chain.length,
+          steps_remaining: result.hint.steps_remaining != null ? result.hint.steps_remaining : undefined,
         }
         
         setHint(hintData)
