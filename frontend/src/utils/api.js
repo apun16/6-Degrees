@@ -1,5 +1,9 @@
 // API utility functions for backend communication
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || (
+  typeof window !== 'undefined' && window.location.hostname === 'localhost'
+    ? 'http://localhost:5001/api'
+    : '/api'
+)
 
 async function apiRequest(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`
@@ -99,4 +103,3 @@ export const api = {
     return apiRequest('/stats')
   },
 }
-
