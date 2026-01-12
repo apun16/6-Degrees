@@ -312,17 +312,7 @@ def get_hint():
             }), 400
         
         game_service = get_game_service()
-        
-        # get optimal path
-        optimal_path = game_service.find_optimal_path(start_word, target_word, max_steps=6)
-        
-        if optimal_path is None:
-            return jsonify({
-                'success': False,
-                'error': 'No path found for this puzzle',
-                'hint': None
-            }), 404
-        
+      
         # parse current path if provided
         current_words = []
         if current_path:
@@ -330,81 +320,89 @@ def get_hint():
         
         # get hint level (how many times user has asked for hint)
         hint_level = int(request.args.get('hintLevel', 1))
-        
-        # Always find the next word to hint at
-        hint_word = None
-        
-        # Build full path including start word to check for duplicates
+
+        # build full path including start word to check for duplicates
         full_path = [start_word.lower()] + [w.lower() for w in current_words]
         used_words = set(full_path)
         
+        # determine current position
         if not current_words or len(current_words) == 0:
-            # no progress yet - hint: next word from optimal path (excluding start word)
-            hint_word = optimal_path[1] if len(optimal_path) > 1 else None
-            # Make sure hint word isn't the start word
-            if hint_word and hint_word.lower() in used_words:
-                hint_word = optimal_path[2] if len(optimal_path) > 2 else None
+            # user hasn't started yet -> use start word
+            current_position = start_word
         elif current_words[-1].lower() == target_word.lower():
             # already at target
-            hint_word = None
-            message = "You've reached the target word!"
+            return jsonify({
+                'success': True,
+                'hint': {
+                    'word': None,
+                    'message': "You've reached the target word!",
+                    'masked_word': None,
+                    'word_length': None,
+                    'fully_revealed': False,
+                    'optimalPathLength': 0,
+                    'hint_level': hint_level
+                }
+            }), 200
         else:
-            # find where we are in optimal path
-            last_word = current_words[-1].lower()
-            
-            # find next word in optimal path (excluding already used words)
-            for i, word in enumerate(optimal_path):
-                if word.lower() == last_word and i < len(optimal_path) - 1:
-                    # Check next words in optimal path, skip if already used
-                    for j in range(i + 1, len(optimal_path)):
-                        candidate = optimal_path[j]
-                        if candidate.lower() not in used_words:
-                            hint_word = candidate
-                            break
-                    break
-            
-            # if not found in optimal path, suggest a semantic neighbor (excluding used words)
-            if not hint_word:
-                neighbors = list(game_service.semantic_graph.get_neighbors(last_word))
-                if neighbors:
-                    # find neighbor closest to target that hasn't been used
-                    best_neighbor = None
-                    best_similarity = -1
-                    for neighbor in neighbors:
-                        # Skip if already used
-                        if neighbor.lower() in used_words:
-                            continue
-                        sim = game_service.get_word_similarity(neighbor, target_word)
-                        if sim > best_similarity:
-                            best_similarity = sim
-                            best_neighbor = neighbor
-                    hint_word = best_neighbor
-                
-                # Fallback: try optimal path words
-                if not hint_word:
-                    for word in optimal_path:
-                        if word.lower() not in used_words:
-                            hint_word = word
-                            break
+            # use last word in current path
+            current_position = current_words[-1]
         
-        # Generate letter reveal hints only
+        # Find optimal path FROM CURRENT POSITION to target
+        optimal_from_here = game_service.find_optimal_path(current_position, target_word, max_steps=6)
+        
+        if optimal_from_here is None or len(optimal_from_here) < 2:
+            return jsonify({
+                'success': False,
+                'error': f'No path found from {current_position} to {target_word}',
+                'hint': None
+            }), 404
+        
+        # hint word is the next word in the optimal path from current position
+        # optimal_from_here[0] is current position, optimal_from_here[1] is the next word
+        hint_word = None
+        
+        # find first word in optimal_from_here that hasn't been used yet
+        for word in optimal_from_here[1:]:  # Skip the first word (current position)
+            if word.lower() not in used_words:
+                hint_word = word
+                break
+        
+        # if all words in optimal path have been used, find a semantic neighbor
+        if not hint_word:
+            neighbors = list(game_service.semantic_graph.get_neighbors(current_position.lower()))
+            if neighbors:
+                # find neighbor closest to target that hasn't been used
+                best_neighbor = None
+                best_similarity = -1
+                for neighbor in neighbors:
+                    # skip if already used
+                    if neighbor.lower() in used_words:
+                        continue
+                    sim = game_service.get_word_similarity(neighbor, target_word)
+                    if sim > best_similarity:
+                        best_similarity = sim
+                        best_neighbor = neighbor
+                hint_word = best_neighbor
+        
+        # generate letter reveal hints only
         masked_word = None
         word_length = None
         fully_revealed = False
         message = ""
+        steps_remaining = len(optimal_from_here) - 1 if optimal_from_here else None
         
         if hint_word:
             word_length = len(hint_word)
-            # Progressive letter reveal based on hint level
+            # progressive letter reveal based on hint level
             letters_to_reveal = min(hint_level, len(hint_word))
             
             if letters_to_reveal >= len(hint_word):
-                # Fully revealed
+                # full reveal
                 masked_word = hint_word.upper()
                 fully_revealed = True
                 message = f"The word is '{hint_word.upper()}'"
             else:
-                # Partially revealed
+                # partial reveal
                 revealed = hint_word[:letters_to_reveal].upper()
                 hidden = '_' * (len(hint_word) - letters_to_reveal)
                 masked_word = revealed + hidden
@@ -420,7 +418,7 @@ def get_hint():
                 'masked_word': masked_word,
                 'word_length': word_length,
                 'fully_revealed': fully_revealed,
-                'optimalPathLength': len(optimal_path) - 1,
+                'steps_remaining': steps_remaining,
                 'hint_level': hint_level
             }
         }), 200

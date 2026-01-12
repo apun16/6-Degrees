@@ -41,6 +41,7 @@ class WordDatabase:
             'snake', 'python', 'cobra', 'viper', 'lizard', 'gecko', 'iguana', 'turtle', 'tortoise', 'crocodile',
             'alligator', 'frog', 'toad', 'salamander', 'spider', 'scorpion', 'ant', 'bee', 'wasp', 'butterfly',
             'moth', 'dragonfly', 'grasshopper', 'cricket', 'beetle', 'ladybug', 'mosquito', 'fly', 'worm',
+            'kitten', 'puppy', 'calf', 'foal', 'lamb', 'chick', 'duckling', 'gosling', 'fawn', 'cub',
             
             # Music & Sound
             'music', 'song', 'sound', 'voice', 'piano', 'guitar', 'violin', 'drum', 'note', 'melody',
