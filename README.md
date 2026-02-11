@@ -1,7 +1,5 @@
 # 6° Degrees
 
-![6 Degrees Demo](./docs/6-Degrees_DEMO%20(1).gif)
-
 A semantic word connection game where players find paths between any two words in six steps or less. 
 
 Check it out here: [https://play6degrees.com/](https://play6degrees.com/)
