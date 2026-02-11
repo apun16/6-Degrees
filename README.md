@@ -1,5 +1,7 @@
 # 6° Degrees
 
+https://github.com/user-attachments/assets/3b27250b-15cf-47c3-ac68-c8bab3ca56af
+
 A semantic word connection game where players find paths between any two words in six steps or less. 
 
 Check it out here: [https://play6degrees.com/](https://play6degrees.com/)
