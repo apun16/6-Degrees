@@ -9,12 +9,12 @@ logger = logging.getLogger(__name__)
 DEFAULT_WORD_FILE = Path(__file__).resolve().parent.parent / "data" / "words.json"
 
 class WordDatabase:
-    # manages the database of valid words for the game, loaded from a JSON
+    # manages the database of valid words for the game, loaded from a json
     # word file (data/words.json by default)
     
     def __init__(self, word_file: Optional[str] = None):
         # init word database
-        # word_file: path to a JSON word list; defaults to the packaged data/words.json
+        # word_file: path to a json word list, defaults to the packaged data/words.json
 
         self.words: Set[str] = set()
         self.categories: Dict[str, List[str]] = {}
@@ -23,8 +23,8 @@ class WordDatabase:
         self.load_from_file(self.word_file)
 
     def load_from_file(self, file_path: str):
-        # load words from a JSON file
-        # accepts either a bare list, or an object with a "words" key and
+        # load words from a json file
+        # accepts either a bare list, or an object with a "words" key and an
         # optional "categories" mapping used for stratified sampling and evals
         with open(file_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
@@ -59,7 +59,7 @@ class WordDatabase:
         return self.categories
 
     def save_to_file(self, file_path: str):
-        # save words to a JSON file, round-tripping categories so this never
+        # save words to a json file, round tripping categories so this never
         # silently discards the grouping that load_from_file read in
         payload = {'words': sorted(self.words)}
         if self.categories:
@@ -69,8 +69,8 @@ class WordDatabase:
         logger.info(f"Saved {len(self.words)} words to {file_path}")
     
     def add_word(self, word: str) -> bool:
-        # Add a word to the database
-        # returns True if word was added, False if it already existed
+        # add a word to the database
+        # returns true if word was added, false if it already existed
         word_lower = word.lower().strip()
         if word_lower not in self.words:
             self.words.add(word_lower)
@@ -78,8 +78,8 @@ class WordDatabase:
         return False
     
     def word_exists(self, word: str) -> bool:
-        # check if a word exists in the database.
-        # returns True if word exists, False otherwise
+        # check if a word exists in the database
+        # returns true if word exists, false otherwise
         return word.lower().strip() in self.words
     
     def get_all_words(self) -> List[str]:

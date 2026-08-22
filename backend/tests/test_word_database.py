@@ -1,42 +1,39 @@
-"""Tests for the vocabulary data file and WordDatabase loader.
-
-The word list used to live as a Python literal inside word_database.py, where 14
-missing trailing commas silently concatenated adjacent entries -- producing junk
-words like 'replicateefficient' and 'raincoatfurniture' while dropping 21 real
-words ('love', 'ocean', 'red', 'animal', ...) from the game entirely. The list now
-lives in data/words.json; these tests keep that class of corruption from returning.
-"""
+# tests for the vocabulary data file and the WordDatabase loader
+#
+# the word list used to live as a python literal inside word_database.py, where 14
+# missing trailing commas silently concatenated adjacent entries. that produced junk
+# words like 'replicateefficient' and 'raincoatfurniture' while dropping 21 real words
+# ('love', 'ocean', 'red', 'animal', ...) from the game entirely. the list now lives in
+# data/words.json and these tests keep that class of corruption from coming back
 import json
-import tempfile
-from pathlib import Path
 
 import pytest
 
 from app.word_database import DEFAULT_WORD_FILE, WordDatabase
 
 
-# Compound words that legitimately decompose into two other vocabulary entries.
-# Anything NOT in this set that decomposes is treated as corruption. Adding an
-# entry here is a deliberate "yes, I looked at this and it is a real word" signal.
+# compound words that legitimately decompose into two other vocabulary entries
+# anything not in this set that decomposes is treated as corruption. adding an entry
+# here is a deliberate "yes, i looked at this and it is a real word" signal
 KNOWN_COMPOUNDS = {
     'birthday', 'butterfly', 'carpet', 'earphone', 'earring', 'firetruck',
     'football', 'footnote', 'framework', 'headphone', 'homework', 'keyboard',
     'microphone', 'microwave', 'necklace', 'notebook', 'pancake', 'raincoat',
     'runtime', 'sunday', 'sunflower', 'sunglasses', 'weekend',
-    # Pre-existing authoring artifacts: these should arguably be two words each
-    # ('half brother', 'table tennis'), but they predate the comma bug and are
-    # allowlisted here rather than silently changed.
+    # pre-existing authoring artifacts, these should arguably be two words each
+    # ('half brother', 'table tennis'), but they predate the comma bug so they are
+    # allowlisted here rather than silently changed
     'halfbrother', 'halfsister', 'tabletennis',
 }
 
-# Words the comma bug removed from the game; all must be present.
+# words the comma bug removed from the game, all must be present
 RESTORED_WORDS = [
     'animal', 'coldness', 'cough', 'efficient', 'furniture', 'game', 'glaze',
     'love', 'ocean', 'particle', 'proud', 'raincoat', 'red', 'rehearsal',
     'replicate', 'run', 'science', 'sow', 'thirst', 'training', 'wealth',
 ]
 
-# The exact junk the comma bug produced; none may ever reappear.
+# the exact junk the comma bug produced, none may ever reappear
 JUNK_WORDS = [
     'coldnesskey', 'coughgame', 'fawngeography', 'glazelove', 'letterapple',
     'particleanimal', 'raincoatfurniture', 'rehearsalred', 'replicateefficient',
@@ -70,7 +67,7 @@ class TestWordFileIntegrity:
         assert dupes == [], f"words listed in more than one category: {sorted(set(dupes))}"
 
     def test_entries_are_normalized(self, word_data):
-        """Lowercase, trimmed, letters only -- internal hyphens allowed ('t-shirt')."""
+        # lowercase, trimmed, letters only, internal hyphens allowed for 't-shirt'
         def ok(w):
             return (w and w == w.strip().lower()
                     and w[0].isalpha() and w[-1].isalpha()
@@ -80,8 +77,8 @@ class TestWordFileIntegrity:
         assert bad == [], f"malformed vocabulary entries: {bad}"
 
     def test_no_concatenation_artifacts(self, word_data):
-        """A word that is exactly two other vocabulary words joined is the
-        signature of a dropped comma. Real compounds are allowlisted above."""
+        # a word that is exactly two other vocabulary words joined is the signature of
+        # a dropped comma. real compounds are allowlisted above
         words = set(word_data['words'])
         suspects = []
         for w in words:
@@ -107,8 +104,8 @@ class TestCommaBugRegression:
         assert not db.word_exists(word)
 
     def test_hardcoded_fallback_pairs_all_exist(self, db):
-        """game_service.get_random_word_pair falls back to these pairs; every
-        word in them must actually be in the vocabulary or the fallback is dead."""
+        # game_service.get_random_word_pair falls back to these pairs, so every word in
+        # them must actually be in the vocabulary or the fallback is dead code
         pairs = [
             ('cat', 'dog'), ('cat', 'animal'), ('dog', 'pet'), ('bird', 'animal'),
             ('tree', 'plant'), ('flower', 'plant'), ('car', 'vehicle'),
@@ -151,8 +148,8 @@ class TestWordDatabase:
 
     @pytest.mark.parametrize('payload', ['{"nope": 1}', '{"words": []}', '[]'])
     def test_invalid_file_raises_rather_than_falling_back(self, tmp_path, payload):
-        """A missing or malformed word file must fail loudly. Silently falling
-        back to a stub vocabulary would ship a broken game that looks healthy."""
+        # a missing or malformed word file must fail loudly, silently falling back to a
+        # stub vocabulary would ship a broken game that looks healthy
         path = tmp_path / 'bad.json'
         path.write_text(payload)
         with pytest.raises(ValueError):

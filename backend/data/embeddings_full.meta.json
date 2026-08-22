@@ -1,0 +1,10 @@
+{
+  "model": "Qwen/Qwen3-Embedding-8B",
+  "dimension": 4096,
+  "word_count": 1761,
+  "instruction": "Given a word, retrieve other words that are related to it by meaning, theme, category, or common association",
+  "normalized": true,
+  "dtype": "float16",
+  "build_seconds": 319.4,
+  "note": "Full-dimension vectors at the model's native width. To produce the shipped artifact, slice to the target Matryoshka dimension and renormalize -- no re-encode needed."
+}
