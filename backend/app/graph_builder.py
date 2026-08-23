@@ -13,7 +13,7 @@
 # the fix is to rank rather than threshold. every rule here reduces to the same thing,
 # a boolean adjacency matrix built from a similarity matrix, so they can be scored
 # head to head by the eval harness with identical downstream code
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Optional
 
 import numpy as np
 
@@ -28,7 +28,17 @@ def cosine_matrix(vectors: np.ndarray) -> np.ndarray:
     norms = np.linalg.norm(v, axis=1, keepdims=True)
     if not np.allclose(norms, 1.0, atol=1e-3):
         v = v / np.maximum(norms, 1e-12)
-    sims = (v @ v.T).astype(np.float32)
+    # the accelerate blas backend on macos sets spurious divide, invalid and overflow
+    # flags during this matmul even though every output value is finite and inside the
+    # valid cosine range (verified across 256, 1024 and 4096 dimensions, zero nan).
+    # the flags are suppressed for this one line only, and the explicit check below is
+    # what actually guards correctness, so a genuine numerical problem still surfaces
+    with np.errstate(all="ignore"):
+        sims = (v @ v.T).astype(np.float32)
+
+    if not np.isfinite(sims).all():
+        raise ValueError("similarity matrix contains non-finite values")
+
     np.fill_diagonal(sims, _SELF)
     return sims
 
